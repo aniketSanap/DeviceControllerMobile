@@ -21,15 +21,23 @@ ws.on('connection', function(w){
 	    dx = parseFloat(res[2]);
 	    dy = parseFloat(res[3]);
 		console.log(dx,dy);
-		if(dx< 0)
+		if(dx > -1 && dx < 1 )
+		{
+			//do nothing
+		}
+		else if(dx< 0)
 		{
 			x = x + movement_deltax;
 		}
 		else if(dx > 0)
 		{
 			x = x - movement_deltax;
+		}
+		if (dy > -1 && dy < 1)
+		{
+			//do nothing
 		}				
-		if(dy>0)
+		else if(dy>0)
 		{
 			y = y + movement_deltay;
 		}
