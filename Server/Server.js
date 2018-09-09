@@ -16,8 +16,10 @@ var dx;
 var dy;
 var x = 0.0;
 var y = 0.0;
+
 var movement_deltax = 3;
 var movement_deltay = 3;
+
 var res;
 ws.on('connection', function(w){
 	console.log("new connection");
@@ -25,6 +27,7 @@ ws.on('connection', function(w){
 	    res = msg.split(" ");
 	    dx = parseFloat(res[2]);
 	    dy = parseFloat(res[3]);
+
 		console.log(x,y);
 		if(dx > -1 && dx < 1 ) {
 			//do nothing
@@ -54,7 +57,9 @@ ws.on('connection', function(w){
 		{
 			y = y - movement_deltay;
 		}
-		// Clip values
+
+    //Clip values
+
 		if(y > screenSize.height)
 		{
 			y = screenSize.height;

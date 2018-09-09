@@ -22,6 +22,7 @@ ws.onopen = function() {
 // Web Socket is connected, send data using send()
     ws.send("Message to send");
 };
+  
 if(window.DeviceMotionEvent) {
     var acc = document.getElementById('accelerometerData');
     var accWithGravity = document.getElementById('accWithGravityData');
@@ -37,6 +38,7 @@ if(window.DeviceMotionEvent) {
     var velx;
     var vely;
     window.addEventListener('devicemotion', function(eventData) {   
+
         var accelerometerText = "Accelerometer: \n\tX acceleration: " + eventData.acceleration.x + "\n\tY acceleration: " + eventData.acceleration.y + "\n\tZ acceleration: " + eventData.acceleration.z + "\n";
         var accGravityText = "Acceleration with gravity:\nX: " + eventData.accelerationIncludingGravity.x + "\nY: " + eventData.accelerationIncludingGravity.y + "\nZ: " + eventData.accelerationIncludingGravity.z + "\n";
         var rotationRateText = "\nRotation rate:\nAlpha: " + eventData.rotationRate.alpha + "\nBeta: " + eventData.rotationRate.beta + "\nGamma: " + eventData.rotationRate.gamma + "\n";
@@ -50,6 +52,7 @@ if(window.DeviceMotionEvent) {
         obj.y = vely;
         obj.accwgx = eventData.accelerationIncludingGravity.x;
         obj.accwgy = eventData.accelerationIncludingGravity.y;
+
         // Acceleration
         acc.innerText = accelerometerText;
         // Acceleration including gravity
@@ -58,6 +61,7 @@ if(window.DeviceMotionEvent) {
         rotationRate.innerText = rotationRateText;
         vx.innerText = "Velocity X: " + obj.x + "\n";
         vy.innerText = "Velocity Y: " + obj.y + "\n";
+
         // ws.send(JSON.stringify(obj));
         ws.send(obj.x + " " + obj.y + " " + obj.accwgx + " " + obj.accwgy);
         initialAccy = finalAccy;
@@ -69,3 +73,4 @@ if(window.DeviceMotionEvent) {
         alert("Connection is closed..."); 
     };
 </script>
+
