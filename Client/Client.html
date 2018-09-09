@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sensor data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <h5 id = "accelerometerData"></h5>
+    <h5 id = "accWithGravityData"></h5>
+    <h5 id = "rotationRate"></h5>
+    <h5 id = "velX"></h5>
+    <h5 id = "velY"></h5>
+</body>
+</html>
+<script type = "text/javascript">
+var ws = new WebSocket("ws://192.168.0.104:9030");
+ws.onopen = function() {  
+// Web Socket is connected, send data using send()
+    ws.send("Message to send");
+};
+if(window.DeviceMotionEvent) {
+    var acc = document.getElementById('accelerometerData');
+    var accWithGravity = document.getElementById('accWithGravityData');
+    var rotationRate = document.getElementById('rotationRate');
+    var vx = document.getElementById('velX');
+    var vy = document.getElementById('velY');
+    var initialAccz = 0;
+    var finalAccx;
+    var initialAccx = 0;
+    var finalAccy;
+    var initialAccy = 0;
+    var finalAccz;
+    var velx;
+    var vely;
+    window.addEventListener('devicemotion', function(eventData) {   
+        var accelerometerText = "Accelerometer: \n\tX acceleration: " + eventData.acceleration.x + "\n\tY acceleration: " + eventData.acceleration.y + "\n\tZ acceleration: " + eventData.acceleration.z + "\n";
+        var accGravityText = "Acceleration with gravity:\nX: " + eventData.accelerationIncludingGravity.x + "\nY: " + eventData.accelerationIncludingGravity.y + "\nZ: " + eventData.accelerationIncludingGravity.z + "\n";
+        var rotationRateText = "\nRotation rate:\nAlpha: " + eventData.rotationRate.alpha + "\nBeta: " + eventData.rotationRate.beta + "\nGamma: " + eventData.rotationRate.gamma + "\n";
+        finalAccx = eventData.acceleration.x;
+        finalAccy = eventData.acceleration.y;
+        // finalAccz = eventData.acceleration.z;
+        velx = finalAccx - initialAccx;
+        vely = finalAccy - initialAccy;
+        obj = {};
+        obj.x = velx;
+        obj.y = vely;
+        obj.accwgx = eventData.accelerationIncludingGravity.x;
+        obj.accwgy = eventData.accelerationIncludingGravity.y;
+        // Acceleration
+        acc.innerText = accelerometerText;
+        // Acceleration including gravity
+        accWithGravity.innerText = accGravityText;
+        // Rotation rate
+        rotationRate.innerText = rotationRateText;
+        vx.innerText = "Velocity X: " + obj.x + "\n";
+        vy.innerText = "Velocity Y: " + obj.y + "\n";
+        // ws.send(JSON.stringify(obj));
+        ws.send(obj.x + " " + obj.y + " " + obj.accwgx + " " + obj.accwgy);
+        initialAccy = finalAccy;
+        initialAccx = finalAccx;
+    }, false);
+}    
+    ws.onclose = function() {   
+        // websocket is closed.
+        alert("Connection is closed..."); 
+    };
+</script>
