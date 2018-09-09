@@ -1,5 +1,10 @@
 var Server = require('ws').Server;
-var robot = require('./robotjs');
+var robot;
+if(require('os').userInfo().username == "aniket") {	// Just for Aniket I know this is pretty bad practice but it is temporary.
+	robot = require('./robotjs');
+} else {
+	robot = require('robotjs');
+}
 var port = process.env.PORT || 9030;
 var ws = new Server({port: port});
 console.log("Running");
