@@ -1,5 +1,5 @@
 var Server = require('ws').Server;
-var robot = require('./robotjs.node');
+var robot = require('robotjs');
 var port = process.env.PORT || 9030;
 var ws = new Server({port: port});
 console.log("Running");
