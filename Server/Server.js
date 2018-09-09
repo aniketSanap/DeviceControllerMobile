@@ -1,5 +1,10 @@
 var Server = require('ws').Server;
-var robot = require('robotjs');
+var robot;
+if(require('os').userInfo().username == "aniket") {	// Just for Aniket I know this is pretty bad practice but it is temporary.
+	robot = require('./robotjs');
+} else {
+	robot = require('robotjs');
+}
 var port = process.env.PORT || 9030;
 var ws = new Server({port: port});
 console.log("Running");
@@ -11,8 +16,10 @@ var dx;
 var dy;
 var x = 0.0;
 var y = 0.0;
-var movement_deltax = 1;
-var movement_deltay = 1;
+
+var movement_deltax = 3;
+var movement_deltay = 3;
+
 var res;
 ws.on('connection', function(w){
 	console.log("new connection");
@@ -20,11 +27,14 @@ ws.on('connection', function(w){
 	    res = msg.split(" ");
 	    dx = parseFloat(res[2]);
 	    dy = parseFloat(res[3]);
-		console.log(dx,dy);
-		if(dx > -1 && dx < 1 )
-		{
+
+		console.log(x,y);
+		if(dx > -1 && dx < 1 ) {
 			//do nothing
-		}
+		} 
+		// else { 	// Returns NaN
+		// 	x = x + dx;
+		// }
 		else if(dx< 0)
 		{
 			x = x + movement_deltax;
@@ -33,10 +43,12 @@ ws.on('connection', function(w){
 		{
 			x = x - movement_deltax;
 		}
-		if (dy > -1 && dy < 1)
-		{
+		if (dy > -1 && dy < 1) {
 			//do nothing
-		}				
+		} 
+		// else {
+		// 	y = y + dy;
+		// }				
 		else if(dy>0)
 		{
 			y = y + movement_deltay;
@@ -45,7 +57,9 @@ ws.on('connection', function(w){
 		{
 			y = y - movement_deltay;
 		}
-		//Clip values
+
+    //Clip values
+
 		if(y > screenSize.height)
 		{
 			y = screenSize.height;
@@ -68,6 +82,3 @@ ws.on('connection', function(w){
 	  console.log('closing connection');
 	});
 });
-
-
-
