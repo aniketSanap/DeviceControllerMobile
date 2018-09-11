@@ -18,10 +18,6 @@
 </html>
 <script type = "text/javascript">
 var ws = new WebSocket("ws://192.168.0.104:9030");
-ws.onopen = function() {  
-// Web Socket is connected, send data using send()
-    ws.send("Message to send");
-};
   
 if(window.DeviceMotionEvent) {
     var acc = document.getElementById('accelerometerData');
