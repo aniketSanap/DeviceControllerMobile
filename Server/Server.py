@@ -27,8 +27,11 @@ class Server:
 			message = message.split(" ")
 			dx = float(message[2])
 			dy = float(message[3])
+			Lclick = message[4]
 			#print(message)
 			#print("delta x: %f, delta y: %f" % (dx,dy))
+			if Lclick == "true":
+				pyautogui.click()
 			if dx > -1 and dx <1:
 				pass
 			elif dx < 0:
